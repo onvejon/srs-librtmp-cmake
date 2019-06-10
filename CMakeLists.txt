@@ -29,6 +29,24 @@ file(GLOB PROTOCOL_HEADERS "${SRC_ROOT}/protocol/*.h*" )
 file(GLOB PROTOCOL_SRCS "${SRC_ROOT}/protocol/*.c*")
 
 if(BUILD_WITH_STATIC)
+option(BUILD_IMP_DISABLE " Disable IMP lib" ON)
+if(BUILD_IMP_DISABLE)
+    set(CompilerFlags
+        CMAKE_CXX_FLAGS
+        CMAKE_CXX_FLAGS_DEBUG
+        CMAKE_CXX_FLAGS_RELEASE
+        CMAKE_C_FLAGS
+        CMAKE_C_FLAGS_DEBUG
+        CMAKE_C_FLAGS_RELEASE
+    )
+        
+    foreach(CompilerFlag ${CompilerFlags})
+            string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
+            string(REPLACE "/Ob0" "" ${CompilerFlag} "${${CompilerFlag}}")
+            string(REPLACE "/TC" "" ${CompilerFlag} "${${CompilerFlag}}")
+    endforeach()
+endif()
+
     add_library(srs_librtmp STATIC ${OBJS_HEADERS}
     ${CORE_HEADERS} ${CORE_SRCS}
     ${KERNEL_HEADERS} ${KERNEL_SRCS}
