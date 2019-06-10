@@ -1062,11 +1062,13 @@ typedef void* srs_hijack_io_t;
     #include <time.h>
     int gettimeofday(struct timeval* tv, struct timezone* tz);
     #define PRId64 "lld"
-    
+	
+#if defined(_WS2TCPIP_H_) 
     // for inet helpers.
     typedef int socklen_t;
     const char *inet_ntop(int af, const void *src, char *dst, socklen_t size);
-    
+#endif
+
     // for mkdir().
     #include<direct.h>
     
